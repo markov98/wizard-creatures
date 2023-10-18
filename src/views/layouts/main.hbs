@@ -3,13 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>404 Page</title>
+    <title>Home Page</title>
 
     <!-- Do not forget to change the path to the css file -->
     <link href="./static/css/style.css" type="text/css" rel="stylesheet">
 </head>
 
 <body>
+
 
     <div id="box">
 
@@ -26,37 +27,25 @@
             <img src="./static/img/logo.png" alt="logo">
 
             <ul class="menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">All Posts</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/posts/all">All Posts</a></li>
                 <!-- Logged users -->
-                <li><a href="#">Create Post</a></li>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/posts/create">Create Post</a></li>
+                <li><a href="/users/profile">Profile</a></li>
+                <li><a href="/users/logout">Logout</a></li>
                 <!-- Guest users -->
-                <li><a href="#">Register</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="/users/register">Register</a></li>
+                <li><a href="/users/login">Login</a></li>
             </ul>
 
         </nav>
 
-
         <main>
 
-            <div class="full-screen">
-                <div class='con-not-found'>
-                    <div class="voldemor-img">
-                        <img src="./static/img/Voldemort.jpg">
-                    </div>
+        {{body}}
 
-                    <div class="error-message">
-                        <span class="error-num">404</span>
-                        <p>The page is not found like Voldemort's nose!</p>
-                        <p>Go Back to <a href="#">HOME</a></p>
-                    </div>
-
-                </div>
-            </div>
         </main>
+
 
         <footer>
             © JS Back-End Exam 2023
