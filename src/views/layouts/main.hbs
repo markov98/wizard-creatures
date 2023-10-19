@@ -28,13 +28,14 @@
             <ul class="menu">
                 <li><a href="/">Home</a></li>
                 <li><a href="/posts/all">All Posts</a></li>
-                <!-- Logged users -->
+                {{#if isAuthenticated}}
                 <li><a href="/posts/create">Create Post</a></li>
                 <li><a href="/posts/my">Profile</a></li>
                 <li><a href="/user/logout">Logout</a></li>
-                <!-- Guest users -->
+                {{else}}
                 <li><a href="/user/register">Register</a></li>
                 <li><a href="/user/login">Login</a></li>
+                {{/if}}
             </ul>
 
         </nav>
