@@ -1,5 +1,8 @@
 const app = require('./config/express');
-const {PORT, DBURL} = require('./config/constants');
+const {PORT, DBURL} = require('./constants');
+
+//Setting up router
+require('./router')(app);
 
 // Connecting to DB
 require('./config/db')(DBURL)
