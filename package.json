@@ -2,14 +2,16 @@
   "name": "wizard-creatures",
   "version": "1.0.0",
   "description": "JS Back-End Exam Preparation",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2"
   },
