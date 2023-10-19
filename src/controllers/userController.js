@@ -9,6 +9,19 @@ router.get('/login', (req, res) => {
     res.render('user/login');
 });
 
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const token = await userService.login(email, password);
+        res.cookie('auth', token);
+
+        res.redirect('/')
+    } catch (err) {
+        res.status(404).render('user/login', { errMsg: extractErrorMsgs(err) });
+    }
+});
+
 // Register Page
 
 router.get('/register', (req, res) => {
@@ -17,7 +30,6 @@ router.get('/register', (req, res) => {
 
 router.post('/register', async (req, res) => {
     const { email, firstName, lastName, password, rePass } = req.body;
-    console.log(req.body);
 
     try {
         if (password !== rePass) {
