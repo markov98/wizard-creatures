@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const userService = require('../services/userService');
+const { extractErrorMsgs } = require('../utils/errorHandling');
 
 // Login Page
 
@@ -14,19 +15,19 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const {email, firstName, lastName, password, rePass} = req.body;
+    const { email, firstName, lastName, password, rePass } = req.body;
     console.log(req.body);
 
     try {
         if (password !== rePass) {
-            throw new Error ('Passwords do not match!');
+            throw new Error('Passwords do not match!');
         }
 
         await userService.register(email, firstName, lastName, password);
 
         res.send('Registered');
     } catch (err) {
-        res.send(err);
+        res.status(404).render('user/register', { errMsg: extractErrorMsgs(err) });
     }
 });
 
