@@ -3,7 +3,7 @@ const postService = require('../services/postService');
 const userService = require('../services/userService');
 const { isAuth } = require("../middlewares/auth");
 const { extractErrorMsgs } = require('../utils/errorHandling');
-const { postExistanceCheck } = require("../middlewares/checks");
+const { postExistanceCheck, ownershipCheck } = require("../middlewares/checks");
 
 // All Post Page
 
@@ -53,8 +53,22 @@ router.get('/:id/details', postExistanceCheck, async (req, res) => {
 
 // Edit Page
 
-router.get('/edit', (req, res) => {
-    res.render('posts/edit');
+router.get('/:id/edit', isAuth, postExistanceCheck, ownershipCheck, (req, res) => {
+    const { name, species, skinColor, eyeColor, imgUrl, description } = res.post;
+
+    res.render('posts/edit', { name, species, skinColor, eyeColor, imgUrl, description });
+});
+
+router.post('/:id/edit', isAuth, postExistanceCheck, ownershipCheck, async (req, res) => {
+    const { name, species, skinColor, eyeColor, imgUrl, description } = req.body;
+    const { id } = req.params;
+
+    try {
+        await postService.edit(id, { name, species, skinColor, eyeColor, imgUrl, description });
+        res.redirect(`/posts/${id}/details`);
+    } catch (err) {
+        res.render('posts/edit', { name, species, skinColor, eyeColor, imgUrl, description, errMsg: extractErrorMsgs(err) });
+    }
 });
 
 // Voting
