@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema({
         required: [true, 'Species is required!'],
         minLength: [3, 'Spicies must be at least 3 characters long!']
     },
-    imageUrl: {
+    imgUrl: {
         type: String,
         required: [true, 'Image URL is required!'],
         match: [/^https?:\/\//, 'Invalid image URL!']
@@ -19,7 +19,7 @@ const postSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Description is required!'],
-        minLength: [5, 'Description must be between 5 and 50 characters long!'],
+        minLength: [5, 'Description must be between 5 and 500 characters long!'],
         maxLength: [500, 'Description must be between 5 and 500 characters long!']
     },
     skinColor: {

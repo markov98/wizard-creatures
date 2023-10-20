@@ -1,20 +1,46 @@
 const router = require("express").Router();
+const postService = require('../services/postService');
+const { isAuth } = require("../middlewares/auth");
+const { extractErrorMsgs } = require('../utils/errorHandling');
 
-router.get('/all', (req, res) => {
+// All Post Page
+
+router.get('/all', isAuth, (req, res) => {
     res.render('posts/all-posts');
 });
 
-router.get('/create', (req, res) => {
+// Create Post Page
+
+router.get('/create', isAuth, (req, res) => {
     res.render('posts/create');
 });
+
+router.post('/create', async (req, res) => {
+    const { name, species, skinColor, eyeColor, imgUrl, description } = req.body;
+
+    try {
+        await postService.create({ name, species, skinColor, eyeColor, imgUrl, description, owner: req.user });
+
+        res.redirect('/posts/all');
+    } catch (err) {
+        res.status(404).render('posts/create', { errMsg: extractErrorMsgs(err) });
+    }
+
+});
+
+// Details Page
 
 router.get('/details', (req, res) => {
     res.render('posts/details');
 });
 
+// Edit Page
+
 router.get('/edit', (req, res) => {
     res.render('posts/edit');
 });
+
+// My Posts Page
 
 router.get('/my', (req, res) => {
     res.render('posts/my-posts');
