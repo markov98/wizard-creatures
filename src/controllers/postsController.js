@@ -40,14 +40,42 @@ router.get('/:id/details', postExistanceCheck, async (req, res) => {
     const username = `${user.firstName} ${user.lastName}`;
 
     const isOwner = req.user?._id === post.owner.toString();
-    
-    res.render('posts/details', { post, username, isOwner });
+
+    const voterIds = post.voters.map(el => el.toString());
+    const hasVoted = voterIds.includes(req.user?._id);
+    const voters = await userService.getVoters(voterIds).lean();
+    const voterEmails = voters.map(voter => voter.email).join(', ');
+    const votersAmount = voters.length;
+    const isEmpty = votersAmount === 0;
+
+    res.render('posts/details', { post, username, isOwner, hasVoted, voterEmails, votersAmount, isEmpty });
 });
 
 // Edit Page
 
 router.get('/edit', (req, res) => {
     res.render('posts/edit');
+});
+
+// Voting
+
+router.get('/:id/vote', isAuth, postExistanceCheck, async (req, res) => {
+    const { post } = res;
+    const { user } = req;
+    const { id } = req.params;
+
+    const isOwner = user._id === post.owner.toString();
+    const hasVoted = post.voters.map(el => el.toString()).includes(user._id);
+
+    console.log(hasVoted)
+
+    if (isOwner || hasVoted) {
+        return res.redirect('/404');
+    }
+
+    await postService.vote(id, user);
+
+    res.redirect(`/posts/${id}/details`);
 });
 
 // My Posts Page

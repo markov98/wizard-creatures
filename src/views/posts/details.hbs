@@ -14,18 +14,19 @@
                         <p class="card-eye">Eye Colour: {{post.eyeColor}}</p>
                     </div>
 
-                    <p class="disc">Description: {{post.owner}}</p>
+                    <p class="disc">Description: {{post.description}}</p>
 
                     {{#if isAuthenticated}}
                         <div class="social-btn">
                         {{#if isOwner}}
-                            <a href="posts/{{post.id}}/edit" class="edit-btn">Edit</a>
-                            <a href="posts/{{post.id}}/delete" class="del-btn">Delete</a>
+                            <a href="/posts/{{post._id}}/edit" class="edit-btn">Edit</a>
+                            <a href="/posts/{{post._id}}/delete" class="del-btn">Delete</a>
                         {{else}}
-                            <a href="posts/{{post.id}}/vote" class="vote-up">Vote</a>
-
-                            <!-- logged in user who has already voted-->
-                            <p class="thanks-for-vote">Thanks For Voting</p>
+                            {{#if hasVoted}}
+                                <p class="thanks-for-vote">Thanks For Voting</p>
+                            {{else}}
+                                <a href="/posts/{{post._id}}/vote" class="vote-up">Vote</a>
+                            {{/if}}
                         {{/if}}
                         </div>
                     {{/if}}
@@ -44,14 +45,13 @@
                 <div class="card_datails">
                     <h1>Votes</h1>
                     <div class="card_vote">
-                        <!-- Show the rating of votes, if there are no votes yet, the number must be 0. -->
-                        <p class="PV">Total rating of votes: 0</p>
+                        <p class="PV">Total rating of votes: {{votersAmount}}</p>
                     </div>
-                    <!-- If there are already people who have cast their vote for the post, separate their emails with a comma and a space ", " -->
-                    <!-- <p class="disc">People who voted for the post - alex@gmai.com, petar@gmail.com, petq@gmail.com</p>-->
-
-                    <!-- If not display: -->
-                    <p class="disc">People who voted for the post - No one has voted yet.</p>
+                    {{#if isEmpty}}
+                        <p class="disc">People who voted for the post - No one has voted yet.</p>
+                    {{else}}
+                        <p class="disc">People who voted for the post - {{voterEmails}}</p>
+                    {{/if}}
                 </div>
             </div>
         </div>
