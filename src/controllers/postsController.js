@@ -5,8 +5,10 @@ const { extractErrorMsgs } = require('../utils/errorHandling');
 
 // All Post Page
 
-router.get('/all', isAuth, (req, res) => {
-    res.render('posts/all-posts');
+router.get('/all', async (req, res) => {
+    const posts = await postService.getAll().lean();
+    const isEmpty = posts.length === 0;
+    res.render('posts/all-posts', { posts, isEmpty });
 });
 
 // Create Post Page
@@ -15,7 +17,7 @@ router.get('/create', isAuth, (req, res) => {
     res.render('posts/create');
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', isAuth, async (req, res) => {
     const { name, species, skinColor, eyeColor, imgUrl, description } = req.body;
 
     try {
