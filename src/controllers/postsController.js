@@ -71,7 +71,7 @@ router.post('/:id/edit', isAuth, postExistanceCheck, ownershipCheck, async (req,
     }
 });
 
-// Voting
+// Vote
 
 router.get('/:id/vote', isAuth, postExistanceCheck, async (req, res) => {
     const { post } = res;
@@ -90,6 +90,13 @@ router.get('/:id/vote', isAuth, postExistanceCheck, async (req, res) => {
     await postService.vote(id, user);
 
     res.redirect(`/posts/${id}/details`);
+});
+
+// Delete
+
+router.get('/:id/delete', isAuth, postExistanceCheck, ownershipCheck, async (req, res) => {
+    await postService.delete(req.params.id);
+    res.redirect('/posts/all');
 });
 
 // My Posts Page

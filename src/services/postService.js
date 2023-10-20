@@ -9,3 +9,5 @@ exports.create = (postData) => Post.create(postData);
 exports.vote = (id, user) => Post.findByIdAndUpdate(id, { $push: { voters: user } });
 
 exports.edit = (id, data) => Post.findByIdAndUpdate(id, data, {runValidators: true});
+
+exports.delete = (id) => Post.findByIdAndDelete(id);
