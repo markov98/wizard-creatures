@@ -38,8 +38,10 @@ router.get('/:id/details', postExistanceCheck, async (req, res) => {
     const { post } = res;
     const user = await userService.getById(post.owner.toString());
     const username = `${user.firstName} ${user.lastName}`;
+
+    const isOwner = req.user?._id === post.owner.toString();
     
-    res.render('posts/details', { post, username });
+    res.render('posts/details', { post, username, isOwner });
 });
 
 // Edit Page
