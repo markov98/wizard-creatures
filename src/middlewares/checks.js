@@ -4,6 +4,10 @@ exports.postExistanceCheck = async (req, res, next) => {
     try {
         const post = await postService.getById(req.params.id).lean();
 
+        if (!post) {
+            throw new Error;
+        }
+
         res.post = post;
         next()
     } catch ( err ) {
