@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const postService = require('../services/postService');
+const userService = require('../services/userService');
 const { isAuth } = require("../middlewares/auth");
 const { extractErrorMsgs } = require('../utils/errorHandling');
+const { postExistanceCheck } = require("../middlewares/checks");
 
 // All Post Page
 
@@ -32,8 +34,12 @@ router.post('/create', isAuth, async (req, res) => {
 
 // Details Page
 
-router.get('/details', (req, res) => {
-    res.render('posts/details');
+router.get('/:id/details', postExistanceCheck, async (req, res) => {
+    const { post } = res;
+    const user = await userService.getById(post.owner.toString());
+    const username = `${user.firstName} ${user.lastName}`;
+    
+    res.render('posts/details', { post, username });
 });
 
 // Edit Page

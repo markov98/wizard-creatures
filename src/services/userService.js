@@ -21,3 +21,5 @@ exports.login = async (email, password) => {
 
     return token;
 };
+
+exports.getById = (id) => User.findById(id);
