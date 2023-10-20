@@ -101,8 +101,18 @@ router.get('/:id/delete', isAuth, postExistanceCheck, ownershipCheck, async (req
 
 // My Posts Page
 
-router.get('/my', (req, res) => {
-    res.render('posts/my-posts');
+router.get('/my', isAuth, async (req, res) => {
+    let posts = await postService.getMyPosts(req.user).lean();
+    const isEmpty = posts.length === 0;
+
+    const user = await userService.getById(req.user._id).lean();
+
+    posts = posts.map(post => {
+        post.author = `${user.firstName} ${user.lastName}`;
+        return post;
+    });
+
+    res.render('posts/my-posts', { posts, isEmpty });
 });
 
 module.exports = router;
