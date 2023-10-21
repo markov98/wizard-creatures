@@ -81,8 +81,6 @@ router.get('/:id/vote', isAuth, postExistanceCheck, async (req, res) => {
     const isOwner = user._id === post.owner.toString();
     const hasVoted = post.voters.map(el => el.toString()).includes(user._id);
 
-    console.log(hasVoted)
-
     if (isOwner || hasVoted) {
         return res.redirect('/404');
     }
